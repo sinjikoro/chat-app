@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1045678263517",
+    "project_id": "chat-shinnaga",
+    "storage_bucket": "chat-shinnaga.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1045678263517:android:8c52efbc1252f04d0cdf34",
+        "android_client_info": {
+          "package_name": "com.example.chat_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1045678263517-fkc4to420ut02e0g1ps86jv7t503if94.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjazKDlyt0_tPBw1Em06owcU7ErXWPKRc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1045678263517-fkc4to420ut02e0g1ps86jv7t503if94.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
