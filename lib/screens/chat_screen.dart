@@ -7,10 +7,26 @@ class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.builder(
-          itemCount: 10,
-          itemBuilder: (context, index) =>
-              const SizedBox(height: 30, child: Text('This worked!'))),
+      body: StreamBuilder(
+          stream: FirebaseFirestore.instance
+              .collection('chats/6zqHq1d62r1Dr3fNIHfA/message')
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: Text('This works!'),
+              );
+            }
+            final docment = snapshot.data?.docs;
+            return ListView.builder(
+              itemCount: docment?.length ?? 0,
+              itemBuilder: (context, index) => Container(
+                padding: const EdgeInsets.all(8),
+                height: 30,
+                child: Text(docment?[index]['text']),
+              ),
+            );
+          }),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {
@@ -18,9 +34,9 @@ class ChatScreen extends StatelessWidget {
               .collection('chats/6zqHq1d62r1Dr3fNIHfA/message')
               .snapshots()
               .listen((data) {
-            data.docs.forEach((doc) {
+            for (var doc in data.docs) {
               print(doc['text']);
-            });
+            }
           });
         },
       ),
