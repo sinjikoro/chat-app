@@ -15,6 +15,5 @@ class _AuthScreenState extends State<AuthScreen> {
       backgroundColor: Theme.of(context).primaryColor,
       body: const AuthForm(),
     );
-    ;
   }
 }
