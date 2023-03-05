@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class AuthForm extends StatefulWidget {
-  const AuthForm({super.key, required this.submitFn});
+  const AuthForm({super.key, required this.submitFn, required this.isLoading});
+
+  final bool isLoading;
 
   final void Function({
     required String userName,
@@ -95,17 +97,20 @@ class _AuthFormState extends State<AuthForm> {
                 const SizedBox(
                   height: 12,
                 ),
-                ElevatedButton(
-                  onPressed: trySubmit,
-                  child: Text(isLogin ? 'Login' : 'Sign up'),
-                ),
-                TextButton(
-                  onPressed: () => setState(() {
-                    isLogin = !isLogin;
-                  }),
-                  child: Text(
-                      isLogin ? 'Create new account' : 'Already get account'),
-                ),
+                if (widget.isLoading) const CircularProgressIndicator(),
+                if (!widget.isLoading)
+                  ElevatedButton(
+                    onPressed: trySubmit,
+                    child: Text(isLogin ? 'Login' : 'Sign up'),
+                  ),
+                if (!widget.isLoading)
+                  TextButton(
+                    onPressed: () => setState(() {
+                      isLogin = !isLogin;
+                    }),
+                    child: Text(
+                        isLogin ? 'Create new account' : 'Already get account'),
+                  ),
               ],
             ),
           ),
