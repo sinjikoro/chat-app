@@ -29,9 +29,9 @@ class _AuthFormState extends State<AuthForm> {
       formKey.currentState!.save();
 
       widget.submitFn(
-        userName: userName,
-        emailAddress: userAddress,
-        password: userPassword,
+        userName: userName.trim(),
+        emailAddress: userAddress.trim(),
+        password: userPassword.trim(),
         isLogin: isLogin,
       );
     }
@@ -64,7 +64,7 @@ class _AuthFormState extends State<AuthForm> {
                     userAddress = newValue ?? '';
                   },
                 ),
-                if (isLogin)
+                if (!isLogin)
                   TextFormField(
                     key: const ValueKey('userName'),
                     decoration: const InputDecoration(labelText: 'UserName'),
