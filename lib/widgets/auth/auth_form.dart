@@ -1,5 +1,6 @@
 import 'package:chat_app/widgets/pickers/user_image_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AuthForm extends StatefulWidget {
   const AuthForm({super.key, required this.submitFn, required this.isLoading});
@@ -19,23 +20,38 @@ class AuthForm extends StatefulWidget {
 
 class _AuthFormState extends State<AuthForm> {
   final formKey = GlobalKey<FormState>();
-  var isLogin = true;
-  var userName = '';
-  var userAddress = '';
-  var userPassword = '';
+  var _isLogin = true;
+  var _userName = '';
+  var _userAddress = '';
+  var _userPassword = '';
+  XFile? _userImageFile;
+
+  void _pickedImage(XFile? image) {
+    _userImageFile = image;
+  }
 
   void trySubmit() {
     final isValid = formKey.currentState?.validate() ?? false;
     FocusScope.of(context).unfocus();
 
+    if (_userImageFile == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Please pick an image.'),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ),
+      );
+      return;
+    }
+
     if (isValid) {
       formKey.currentState!.save();
 
       widget.submitFn(
-        userName: userName.trim(),
-        emailAddress: userAddress.trim(),
-        password: userPassword.trim(),
-        isLogin: isLogin,
+        userName: _userName.trim(),
+        emailAddress: _userAddress.trim(),
+        password: _userPassword.trim(),
+        isLogin: _isLogin,
       );
     }
   }
@@ -53,7 +69,10 @@ class _AuthFormState extends State<AuthForm> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                if (!isLogin) const UserImagePicker(),
+                if (!_isLogin)
+                  UserImagePicker(
+                    ImagePickFn: _pickedImage,
+                  ),
                 TextFormField(
                   key: const ValueKey('email'),
                   keyboardType: TextInputType.emailAddress,
@@ -65,10 +84,10 @@ class _AuthFormState extends State<AuthForm> {
                     return null;
                   },
                   onSaved: (newValue) {
-                    userAddress = newValue ?? '';
+                    _userAddress = newValue ?? '';
                   },
                 ),
-                if (!isLogin)
+                if (!_isLogin)
                   TextFormField(
                     key: const ValueKey('userName'),
                     decoration: const InputDecoration(labelText: 'UserName'),
@@ -79,7 +98,7 @@ class _AuthFormState extends State<AuthForm> {
                       return null;
                     },
                     onSaved: (newValue) {
-                      userName = newValue ?? '';
+                      _userName = newValue ?? '';
                     },
                   ),
                 TextFormField(
@@ -93,7 +112,7 @@ class _AuthFormState extends State<AuthForm> {
                     return null;
                   },
                   onSaved: (newValue) {
-                    userPassword = newValue ?? '';
+                    _userPassword = newValue ?? '';
                   },
                 ),
                 const SizedBox(
@@ -103,15 +122,16 @@ class _AuthFormState extends State<AuthForm> {
                 if (!widget.isLoading)
                   ElevatedButton(
                     onPressed: trySubmit,
-                    child: Text(isLogin ? 'Login' : 'Sign up'),
+                    child: Text(_isLogin ? 'Login' : 'Sign up'),
                   ),
                 if (!widget.isLoading)
                   TextButton(
                     onPressed: () => setState(() {
-                      isLogin = !isLogin;
+                      _isLogin = !_isLogin;
                     }),
-                    child: Text(
-                        isLogin ? 'Create new account' : 'Already get account'),
+                    child: Text(_isLogin
+                        ? 'Create new account'
+                        : 'Already get account'),
                   ),
               ],
             ),
