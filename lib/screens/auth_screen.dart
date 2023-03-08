@@ -43,15 +43,19 @@ class _AuthScreenState extends State<AuthScreen> {
 
         await ref.putFile(File(image.path));
 
+        final url = await ref.getDownloadURL();
+
         FirebaseFirestore.instance
             .collection('users')
             .doc(userCredential.user!.uid)
             .set({
           'username': userName,
           'email': emailAddress,
+          'image_url': url,
         });
       }
     } catch (err) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(err.toString()),
