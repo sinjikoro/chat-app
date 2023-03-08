@@ -12,6 +12,7 @@ class AuthForm extends StatefulWidget {
     required String emailAddress,
     required String password,
     required bool isLogin,
+    required XFile image,
   }) submitFn;
 
   @override
@@ -52,6 +53,7 @@ class _AuthFormState extends State<AuthForm> {
         emailAddress: _userAddress.trim(),
         password: _userPassword.trim(),
         isLogin: _isLogin,
+        image: _userImageFile!,
       );
     }
   }
