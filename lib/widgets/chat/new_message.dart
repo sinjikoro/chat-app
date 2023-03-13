@@ -25,6 +25,7 @@ class _NewMessageState extends State<NewMessage> {
       'text': enterMessage,
       'userId': user?.uid ?? '',
       'userName': userData['username'],
+      'userImage': userData['image_url'],
       'createAt': Timestamp.now(),
     });
     textController.clear();
@@ -35,26 +36,29 @@ class _NewMessageState extends State<NewMessage> {
     return Container(
       margin: const EdgeInsets.only(top: 8),
       padding: const EdgeInsets.all(8),
-      child: Row(children: [
-        Expanded(
-          child: TextField(
-            controller: textController,
-            decoration: const InputDecoration(labelText: 'Send a message ...'),
-            onChanged: (value) {
-              setState(() {
-                enterMessage = value;
-              });
-            },
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              controller: textController,
+              decoration:
+                  const InputDecoration(labelText: 'Send a message ...'),
+              onChanged: (value) {
+                setState(() {
+                  enterMessage = value;
+                });
+              },
+            ),
           ),
-        ),
-        IconButton(
-          onPressed: enterMessage.trim().isEmpty ? null : sendMessage,
-          style: ButtonStyle(
-              iconColor:
-                  MaterialStateProperty.all(Theme.of(context).primaryColor)),
-          icon: const Icon(Icons.send),
-        ),
-      ]),
+          IconButton(
+            onPressed: enterMessage.trim().isEmpty ? null : sendMessage,
+            style: ButtonStyle(
+                iconColor:
+                    MaterialStateProperty.all(Theme.of(context).primaryColor)),
+            icon: const Icon(Icons.send),
+          ),
+        ],
+      ),
     );
   }
 }
