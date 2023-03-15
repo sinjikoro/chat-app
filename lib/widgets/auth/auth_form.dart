@@ -12,7 +12,7 @@ class AuthForm extends StatefulWidget {
     required String emailAddress,
     required String password,
     required bool isLogin,
-    required XFile image,
+    XFile? image,
   }) submitFn;
 
   @override
@@ -35,7 +35,7 @@ class _AuthFormState extends State<AuthForm> {
     final isValid = formKey.currentState?.validate() ?? false;
     FocusScope.of(context).unfocus();
 
-    if (_userImageFile == null) {
+    if (!_isLogin && _userImageFile == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: const Text('Please pick an image.'),
@@ -53,7 +53,7 @@ class _AuthFormState extends State<AuthForm> {
         emailAddress: _userAddress.trim(),
         password: _userPassword.trim(),
         isLogin: _isLogin,
-        image: _userImageFile!,
+        image: _userImageFile,
       );
     }
   }
@@ -78,7 +78,10 @@ class _AuthFormState extends State<AuthForm> {
                 TextFormField(
                   key: const ValueKey('email'),
                   keyboardType: TextInputType.emailAddress,
+                  autocorrect: false,
+                  textCapitalization: TextCapitalization.none,
                   decoration: const InputDecoration(labelText: 'Email address'),
+                  enableSuggestions: false,
                   validator: (value) {
                     if (value!.isEmpty || !value.contains('@')) {
                       return 'Please enter email address.';
@@ -93,6 +96,9 @@ class _AuthFormState extends State<AuthForm> {
                   TextFormField(
                     key: const ValueKey('userName'),
                     decoration: const InputDecoration(labelText: 'UserName'),
+                    autocorrect: true,
+                    textCapitalization: TextCapitalization.words,
+                    enableSuggestions: false,
                     validator: (value) {
                       if (value!.isEmpty || value.length < 4) {
                         return 'user name needs 4 char.';
